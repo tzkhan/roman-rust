@@ -18,9 +18,19 @@ fn main() {
 fn to_decimal(roman_number: &str) -> i32 {
 
 	let mut num = 0;
+	let mut prev = 0;
 
 	for c in roman_number.chars() {
-		num += roman_char_to_decimal(c);
+
+		let digit = roman_char_to_decimal(c);
+
+		num += digit;
+
+		if prev != 0 && digit > prev {
+			num -= 2 * prev;
+		}
+
+		prev = digit;
 	}
 
 	num
