@@ -4,18 +4,14 @@
 
 fn main() {
 
-	let roman_number = "CLIII";
-	let decimal_number = to_decimal(&roman_number);
+	let roman_numbers = vec!["CliiI", "XxXiV", "CM", "ABC0", "vii"];
 
-	println!("The roman number {} is equal to {} in decimal numbers", roman_number, decimal_number);
-
-	let roman_number = "XXXIV";
-	let decimal_number = to_decimal(&roman_number);
-
-	println!("The roman number {} is equal to {} in decimal numbers", roman_number, decimal_number);
+	for roman_number in roman_numbers {
+		println!("The roman number {} is equal to {} in decimal.", roman_number, to_decimal(roman_number));
+	}
 }
 
-fn to_decimal(roman_number: &str) -> i32 {
+fn to_decimal(roman_number: &str) -> u64 {
 
 	let mut num = 0;
 	let mut prev = 0;
@@ -23,6 +19,8 @@ fn to_decimal(roman_number: &str) -> i32 {
 	for c in roman_number.chars() {
 
 		let digit = roman_char_to_decimal(c);
+
+		if digit <= 0 { break; }
 
 		num += digit;
 
@@ -36,16 +34,16 @@ fn to_decimal(roman_number: &str) -> i32 {
 	num
 }
 
-fn roman_char_to_decimal(roman_char: char) -> i32 {
+fn roman_char_to_decimal(roman_char: char) -> u64 {
 
-	match roman_char {
-	    'I' => 1,
-	    'V' => 5,
-	    'X' => 10,
-	    'L' => 50,
-	    'C' => 100,
-	    'D' => 500,
-	    'M' => 1000,
+	match roman_char.to_uppercase().next() {
+	    Some('I') => 1,
+	    Some('V') => 5,
+	    Some('X') => 10,
+	    Some('L') => 50,
+	    Some('C') => 100,
+	    Some('D') => 500,
+	    Some('M') => 1000,
 	    _ => 0,
 	}
 }
