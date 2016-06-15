@@ -45,7 +45,7 @@ fn roman_char_to_arabic_digit(roman: char) -> usize {
 
 pub fn to_roman(number: usize) -> Option<String> {
 
-    if number <= 0 || number >= 5000 {
+    if number < 1 || number >= 5000 {
         return None;
     }
 
