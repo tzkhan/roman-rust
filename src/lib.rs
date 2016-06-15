@@ -79,6 +79,7 @@ mod tests {
         assert_eq!(to_arabic("IC"), Some(99));
         assert_eq!(to_arabic("XCIX"), Some(99));
         assert_eq!(to_arabic("XA"), None);
+        assert_eq!(to_arabic("abc"), None);
     }
 
     #[test]
