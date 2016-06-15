@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/tzkhan/roman-rust.svg?branch=master)](https://travis-ci.org/tzkhan/roman-rust)
+
 # roman_rust
 ###Conversions from and to roman numerals in rust lang.
 
