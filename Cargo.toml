@@ -1,6 +1,6 @@
 [package]
 
-name = "roman-rust"
+name = "roman_rust"
 
 version = "0.1.0"
 
