@@ -4,7 +4,9 @@
 A simple program that allows conversions from roman to arabic numerals and vice versa.
 
 List of functions available:
-	* to_arabic(roman: &str) -> Option<usize>
-	* to_roman(number: usize) -> Option<String>
+```rust
+* to_arabic(roman: &str) -> Option&lt;usize&gt;
+* to_roman(number: usize) -> Option&lt;String&gt;
+```
 
 Also handles validation of roman numerals.
