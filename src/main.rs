@@ -1,49 +1,87 @@
-/*
-** A simple program that allows basic arithmetic operations using roman numerals and conversions to decimal numbers.
-*/
-
 fn main() {
 
-	let roman_numbers = vec!["CliiI", "XxXiV", "CM", "ABC0", "vii"];
+    assert_eq!(to_arabic("CliiI"), Some(153));
+    assert_eq!(to_arabic("XxXiV"), Some(34));
+    assert_eq!(to_arabic("CM"), Some(900));
+    assert_eq!(to_arabic("ABC0"), None);
+    assert_eq!(to_arabic("vii"), Some(7));
+    assert_eq!(to_arabic("IC"), Some(99));
+    assert_eq!(to_arabic("XCIX"), Some(99));
+    assert_eq!(to_arabic("XA"), None);
 
-	for roman_number in roman_numbers {
-		println!("The roman number {} is equal to {} in decimal.", roman_number, to_decimal(roman_number));
-	}
+    assert_eq!(to_roman(5), Some("V".to_string()));
+    assert_eq!(to_roman(101), Some("CI".to_string()));
+    assert_eq!(to_roman(99), Some("XCIX".to_string()));
+    assert_eq!(to_roman(4999), Some("MMMMCMXCIX".to_string()));
+    assert_eq!(to_roman(5000), None);
+    assert_eq!(to_roman(5001), None);
+    assert_eq!(to_roman(10000), None);
+    assert_eq!(to_roman(0), None);
 }
 
-fn to_decimal(roman_number: &str) -> u64 {
+static LOOKUP: [(usize, &'static str); 13] = [(1000, "M"), (900, "CM"), (500, "D"), (400, "CD"),
+                                              (100, "C"), (90, "XC"), (50, "L"), (40, "XL"),
+                                              (10, "X"), (9, "IX"), (5, "V"), (4, "IV"), (1, "I")];
 
-	let mut num = 0;
-	let mut prev = 0;
+fn to_roman(number: usize) -> Option<String> {
 
-	for c in roman_number.chars() {
+    if number <= 0 || number >= 5000 {
+        return None;
+    }
 
-		let digit = roman_char_to_decimal(c);
+    let mut roman = String::new();
+    let mut num = number;
 
-		if digit <= 0 { break; }
-
-		num += digit;
-
-		if prev != 0 && digit > prev {
-			num -= 2 * prev;
-		}
-
-		prev = digit;
-	}
-
-	num
+    while num > 0 {
+        for &(n, s) in &LOOKUP {
+            if n <= num {
+                roman.push_str(s);
+                num-= n;
+                break;
+            }
+        }
+    }
+    
+    Some(roman)
 }
 
-fn roman_char_to_decimal(roman_char: char) -> u64 {
+fn to_arabic(roman: &str) -> Option<usize> {
 
-	match roman_char.to_uppercase().next() {
-	    Some('I') => 1,
-	    Some('V') => 5,
-	    Some('X') => 10,
-	    Some('L') => 50,
-	    Some('C') => 100,
-	    Some('D') => 500,
-	    Some('M') => 1000,
-	    _ => 0,
-	}
+    let iter = roman
+              .chars()
+              .map(roman_char_to_arabic_digit);
+
+    let mut num = 0;
+    let mut prev = 0;
+
+    for d in iter {
+
+        if d <= 0 {
+            return None;
+        }
+
+        num += d;
+
+        if prev != 0 && d > prev {
+            num -= prev * 2;
+        }
+
+        prev = d;
+    }
+
+    Some(num)
+}
+
+fn roman_char_to_arabic_digit(roman: char) -> usize {
+
+    let mut i = 0;
+
+    for &(n, s) in &LOOKUP {
+        if i % 2 == 0 && s.chars().nth(0) == roman.to_uppercase().next() {
+            return n;
+        }
+        i+=1;
+    }
+
+    0
 }

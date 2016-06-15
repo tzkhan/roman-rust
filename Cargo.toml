@@ -1,0 +1,8 @@
+[package]
+
+name = "roman-rust"
+
+version = "0.1.0"
+
+authors = ["Tamim Khan <tzkhan10@gmail.com>"]
+
